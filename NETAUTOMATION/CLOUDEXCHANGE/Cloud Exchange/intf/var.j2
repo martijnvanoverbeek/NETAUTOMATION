@@ -1,0 +1,5 @@
+---
+{{inventory_hostname}}:
+{% for intf in interfaces %}
+- {{intf.name}}.{{cih_vlan_id}}
+{% endfor %}

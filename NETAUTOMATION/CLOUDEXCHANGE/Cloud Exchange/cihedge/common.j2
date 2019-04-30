@@ -1,0 +1,21 @@
+{#building configurations#}
+{% for intf in interfaces %}
+interface {{intf.name}}.{{cih_vlan_id}}
+   ip address {{intf.ip}}
+   description cihl3-{{vpnid}}
+{% endfor -%}
+!
+router bgp {{asedge}}
+{#create bgp neighbor variable#}
+{% for intf in interfaces %}
+{%- set neighbor_ip = intf.ip|ipaddr(1) %}
+   neighbor {{neighbor_ip | ipaddr('address')}} remote-as {{asvtep}}
+   neighbor {{neighbor_ip | ipaddr('address')}} maximum-routes 12000 
+{% endfor %}
+   address-family ipv4
+{% for intf in interfaces %}
+{%- set neighbor_ip = intf.ip|ipaddr(1) %}
+      neighbor {{neighbor_ip | ipaddr('address')}} activate
+{% endfor %}
+
+

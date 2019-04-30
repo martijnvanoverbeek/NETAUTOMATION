@@ -1,0 +1,30 @@
+---
+{#Constructing the VPN ID out of 3 variables#}
+{#Least significant var=id#}
+{#Middle var=provider#}
+{#Most significant var=service#}
+{#vpnid=service+provider+id #}
+{#Constructing the VPN ID out of 3 elements#}
+{#services: cihl3=01, ispl2=10, ispl3=11#}
+{#provider: AWSDCPRI=11, AZERPRI=21, ISP=00, ASWDCPUB=12, AZERPUB=22#}
+{% if service=='cihl3' %}
+   {%- if provider=='AWSDCPRI' -%}
+vpnid: '0111{{id}}'
+   {%- elif provider=='AZERPRI' -%}
+vpnid: '0121{{id}}'
+   {% endif -%}
+{% endif -%}
+{%- if service=='ispl2' %}
+   {%- if provider=='ISP' -%}
+vpnid: '1000{{id}}'
+   {% endif -%}
+{% endif -%}
+{%- if service=='ispl3' %}
+   {%- if provider=='ISP' -%}
+vpnid: '1100{{id}}'
+   {%- elif provider=='AWSDCPUB' -%}
+vpnid: '1112{{id}}'
+   {%- elif provider=='AZERPUB' -%}
+vpnid: '1122{{id}}'
+   {% endif -%}
+{% endif -%}

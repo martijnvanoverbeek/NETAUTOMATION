@@ -1,0 +1,64 @@
+---
+#The play below needs to be invoked with --extra-vars "id=<new id>"
+#The play below creates a new variable vpnid
+#VPN id will be used in the next play for route-targets route distinguishers
+- hosts: localhost
+  connection: local
+  vars:
+    dyn_vars: var_files
+  vars_files:
+     "variables.yml"
+  tasks:
+    - file: path={{dyn_vars}} state=absent
+      run_once: yes
+      changed_when: false
+    - file: path={{dyn_vars}} state=directory
+      run_once: yes
+      changed_when: false
+    - template:
+        src: "tid/vars.j2"
+        dest: "{{dyn_vars}}/variables.yml"
+#Create configurations for cloudexchange
+- hosts: cloudexchange
+  connection: local
+  vars_files:
+    - "var_files/variables.yml"
+    - "variables.yml"
+  tasks:
+    - file: path=builds state=absent
+      run_once: yes
+      changed_when: false
+    - file: path=builds state=directory
+      run_once: yes
+      changed_when: false
+    - template:
+        src: "cloudexchange/common.j2"
+        dest: "builds/{{inventory_hostname}}.conf"
+#Create configurations for cihvtep
+- hosts: cihvtep
+  connection: local
+  vars_files:
+    - "var_files/variables.yml"
+    - "variables.yml"
+  tasks:
+    - template:
+        src: "cihvtep/common.j2"
+        dest: "builds/{{inventory_hostname}}.conf"
+#Create configurations for cihedge
+- hosts: cihedge
+  connection: local
+  vars_files:
+    - "var_files/variables.yml"
+    - "variables.yml"
+  tasks:
+    - template:
+        src: "cihedge/common.j2"
+        dest: "builds/{{inventory_hostname}}.conf"
+#deploy
+- hosts: all
+  connection: network_cli
+  tasks:
+  - eos_config:
+      src: builds/{{inventory_hostname}}.conf
+    register: changes
+  - debug: var=changes

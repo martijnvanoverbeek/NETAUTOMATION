@@ -1,0 +1,18 @@
+#this will be all.yml group services
+ #these are the vtep anycast IP addresses
+vteps:
+  cloudexchange: { ip: 192.168.1.1 }
+  nxosvtep: { ip: 192.168.3.1 }
+  cihvtep: { ip: 192.168.2.1 }
+#these are the mgt loopback IP addresses
+loopbacks:
+  cloudexchange1: { ip: 9.9.9.8 }
+  cloudexchange2: { ip: 9.9.9.9 }
+  nxosvtep1: { ip: 10.10.10.9 }
+  nxosvtep2: { ip: 10.10.10.10 }
+  cihvtep1: { ip: 8.8.8.7 }
+  cihvtep2: { ip: 8.8.8.8 }
+#this is the end of the all.yml group services
+asvtep: 65003
+asce: 65009
+asedge: 65000

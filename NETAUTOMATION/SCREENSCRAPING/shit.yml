@@ -1,0 +1,23 @@
+---
+"vrfname": {
+        "vrf": [
+            {
+                "name": "VRF-Name"
+            }, 
+            {
+                "name": "ISP"
+            }, 
+            {
+                "name": "cih-common"
+            }, 
+            {
+                "name": "default"
+            }, 
+            {
+                "name": "management"
+            }, 
+            {
+                "name": "vpc-keepalive"
+            }
+        ]
+    }

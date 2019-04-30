@@ -1,0 +1,34 @@
+#this will be a directly invoked/extra-vars sql_variable
+id: '0001'
+vlan_id: 1000
+ip_address: 10.225.225.1/29
+#this will be used in the host_var folder
+as: 65009
+#this will be all.yml group services
+#service will be used to create VNID as location+service+serviceid
+service:
+ cihl3: { serviceid: '01' }
+ ispl2: { serviceid: '10' }
+ ispl3: { serviceid: '11' }
+#these are the vtep anycast IP addresses
+vteps:
+  cloudexchange: { ip: 192.168.1.1 }
+  nxosvtep: { ip: 192.168.3.1 }
+  cihvtep: { ip: 192.168.2.1 }
+#these are the mgt loopback IP addresses
+loopbacks:
+  cloudexchange1: { ip: 9.9.9.8 }
+  cloudexchange2: { ip: 9.9.9.9 }
+  nxosvtep1: { ip: 10.10.10.9 }
+  nxosvtep2: { ip: 10.10.10.10 }
+  cihvtep1: { ip: 8.8.8.7 }
+  cihvtep2: { ip: 8.8.8.8 }
+#these are the DC locations
+locations:
+  ELR: 53
+  CTC: 11
+  PLY: 13
+#this is the end of the all.yml group services
+cloud_vlan_id: 100
+ip_subnet: 10.225.225.0/29
+cih_vlan_id: 123

@@ -1,0 +1,6 @@
+---
+interfaces:
+  - name: Ethernet2
+    ip: 10.99.99.4/31
+  - name: Ethernet3
+    ip: 10.99.99.6/31

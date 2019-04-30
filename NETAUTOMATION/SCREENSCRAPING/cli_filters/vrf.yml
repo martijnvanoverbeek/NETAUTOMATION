@@ -1,0 +1,11 @@
+---
+ vars:
+    vrf:
+       name: "{{item.name}}"
+ keys: 
+    vrf:
+      type: list
+      value: "{{vrf}}"
+      items: "^(?P<name>[a-zA-Z0-9-_]+).*"
+
+

@@ -1,0 +1,14 @@
+---
+- name: Run pre-tests
+  hosts: nxos
+  connection: network_cli
+  tasks:
+    - nxos_command:
+        commands:
+         - show vrf
+      register: vrf
+    - set_fact: vrfname={{ vrf.stdout[0] | parse_cli('cli_filters/vrf.yml') }}
+    - debug: var=vrfname
+    - template: 
+         src: shit.j2
+         dest: "commands.yml"                                                                                                            

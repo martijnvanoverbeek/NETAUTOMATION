@@ -1,0 +1,25 @@
+[cloudexchange]
+cloudexchange1  ansible_host=10.0.0.55 ansible_become=yes ansible_become_method=enable
+cloudexchange2  ansible_host=10.0.0.56 ansible_become=yes ansible_become_method=enable
+[cihvtep]
+cihvtep1  ansible_host=10.0.0.57 ansible_become=yes ansible_become_method=enable
+cihvtep2  ansible_host=10.0.0.58 ansible_become=yes ansible_become_method=enable
+[cihedge]
+cihedge1  ansible_host=10.0.0.59 ansible_become=yes ansible_become_method=enable
+cihedge2  ansible_host=10.0.0.60 ansible_become=yes ansible_become_method=enable
+[nxosvtep]
+nxosvtep1  ansible_host=10.0.0.61
+nxosvtep2  ansible_host=10.0.0.62 ansible_become=yes ansible_become_method=enable
+[cloudexchange:vars]
+ansible_network_os=eos
+[cihvtep:vars]
+ansible_network_os=eos
+[cihedge:vars]
+ansible_network_os=eos
+[nxosvtep:vars]
+ansible_network_os=nxos
+[all:vars]
+ansible_user=cisco
+ansible_ssh_pass=cisco
+snmp_community=cisco
+

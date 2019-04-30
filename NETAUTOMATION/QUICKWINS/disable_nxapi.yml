@@ -1,0 +1,59 @@
+---
+- name: Run pre-tests
+  hosts: nxos
+  connection: network_cli
+  tasks:
+    - nxos_command:
+        commands:
+         - show bgp all summary
+         - show ip route
+         - show int status
+      register: output
+    - shell: date +%Y%m%d%H%M
+      register: timestamp
+      delegate_to: localhost
+      check_mode: no
+    - file: path=showoutput state=absent
+      run_once: true
+    - file: path=showoutput state=directory
+      run_once: true
+    - template:
+         src: nxos-printouts.j2
+         dest: "showoutput/{{inventory_hostname}}_{{timestamp.stdout}}_pretest.txt" 
+      delegate_to: localhost                                                                                                            
+- name: disable security breach features
+  hosts: nxos
+  connection: network_cli
+  tasks:
+    - nxos_feature:
+         feature: nxapi
+         state: disabled
+      register: changes
+    - file: path=changes state=absent
+      run_once: true
+    - file: path=changes state=directory
+    - copy:
+          content: |
+             {% for line in changes.commands %}
+             {{line}}
+             {% endfor %}
+          dest: "changes/{{inventory_hostname}}_changes.txt"
+      check_mode: no
+- name: Run post-tests
+  hosts: nxos
+  connection: network_cli
+  tasks:
+    - nxos_command:
+        commands:
+         - show bgp all summary
+         - show ip route
+         - show int status
+      register: output
+    - shell: date +%Y%m%d%H%M
+      register: timestamp
+      delegate_to: localhost
+      check_mode: no
+    - template:
+         src: nxos-printouts.j2
+         dest: "showoutput/{{inventory_hostname}}_{{timestamp.stdout}}_posttest.txt" 
+      delegate_to: localhost

@@ -1,0 +1,13 @@
+---
+#cloud_vlan_id var obtained from the cloudexchange provider, unique at the cloud exchange
+cloud_vlan_id: 100
+#ip_subnet var should come from IPAM
+ip_subnet: 10.225.225.0/29
+#cih_vlan_id var comes from database unique in CIH
+cih_vlan_id: 123
+#database primary key
+id: 9999
+#chosen option
+service: cihl3
+#chosen option
+provider: AZERPRI

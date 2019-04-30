@@ -1,0 +1,30 @@
+{#building configurations#}
+vlan {{cloud_vlan_id}}
+{#for extract the name cihl3 from the #}
+   name cihl3-{{vpnid}}
+!
+vrf definition cihl3-{{vpnid}}
+!
+interface Vlan{{cloud_vlan_id}}
+   description cihl3-{{vpnid}}
+   vrf forwarding cihl3-{{vpnid}}
+{#-use ipaddr filter with host_vars defined lastoctet #} 
+   ip address {{ip_subnet|ipaddr(lastoctet)}}
+!
+ip routing vrf cihl3-{{vpnid}}
+!
+interface vxlan1
+   vxlan vrf  cihl3-{{vpnid}} vni {{vpnid}}
+!
+router bgp {{asce}}
+   vrf cihl3-{{vpnid}}
+{#% creating a transient variable to reference cihvtep ip dict %#}
+{% set rtid = vteps['cihvtep']  %}
+      route-target import evpn {{rtid.ip}}:{{vpnid}} 
+{#% creating a transient variable to reference cloudexchange ip dict %#}
+{% set rtid = vteps['cloudexchange'] %}
+      route-target export evpn {{rtid.ip}}:{{vpnid}} 
+{#create bgp neighbor transient variable#}
+{%- set neighbor_ip = ip_subnet|ipaddr(3) %}
+      neighbor {{neighbor_ip | ipaddr('address')}} remote-as {{asvtep}}
+      neighbor {{neighbor_ip | ipaddr('address')}} maximum-routes 12000 
