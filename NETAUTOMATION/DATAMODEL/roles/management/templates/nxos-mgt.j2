@@ -1,0 +1,53 @@
+switchname {{inventory_hostname}}
+feature nxapi
+feature tacacs+
+feature bgp
+feature pim
+feature eigrp
+feature interface-vlan
+feature hsrp
+feature lacp
+feature dhcp
+feature lldp
+feature vtp
+feature bfd
+
+username {{admin}} password xxxx  role network-admin
+
+banner motd ^
+*********************************************************************
+This is a very very very very very very very very very very very very
+very very very very very very very very very very very very very very 
+very very very very very very very very very very very very very very 
+very very very very very very very very very very very very very very 
+very very very very very very very very very very very very very very
+long banner.
+*********************************************************************
+^
+ip domain-lookup
+ip domain-name uhc.com
+ip name-server {{dns1}} {{dns2}}
+tacacs-server key {{key}}
+tacacs-server host{{tacacs.key}}
+tacacs-server key {{key}} 
+aaa group server tacacs+ uhg_tacacs 
+    server {{tacacs.ip1}} 
+    server {{tacacs.ip2}} 
+    source-interface loopback0
+no logging event link-status default
+!
+  vrf member management
+
+!n start
+line console
+line vty
+!
+{% for ip in logging %}
+logging server {{ip}}} use-vrf default facility local6
+{% endfor %}
+logging source-interface loopback0
+!
+ntp logging
+{% for ip in ntp %}
+ntp server {{ip}}
+{% endfor %}

@@ -1,0 +1,145 @@
+ersion 15.2
+service nagle
+no service pad
+service tcp-keepalives-in
+service tcp-keepalives-out
+service timestamps debug datetime msec localtime show-timezone
+service timestamps log datetime msec localtime show-timezone
+service password-encryption
+service sequence-numbers
+service counters max age 10
+no service dhcp
+no platform punt-keepalive disable-kernel-core
+platform qos marker-statistics
+!
+hostname {{inventory_hostname}}
+!
+!
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+logging snmp-authfail
+logging buffered 20000
+no logging console
+enable secret xxxxx
+!
+aaa new-model
+!
+!
+aaa group server tacacs+ std_tacacs
+!
+aaa authentication login default group tacacs+ local
+aaa authentication login no_tacacs group tacacs+ local
+aaa authorization exec default group tacacs+ none 
+aaa authorization commands 1 default group tacacs+ none 
+aaa authorization commands 15 default group tacacs+ none 
+aaa accounting commands 0 default stop-only group tacacs+
+aaa accounting commands 1 default stop-only group tacacs+
+aaa accounting commands 15 default stop-only group tacacs+
+aaa accounting network default start-stop group tacacs+
+!
+!
+!
+!
+!
+aaa session-id common
+no ip source-route
+ip options drop
+!
+ip flow-cache timeout active 1
+no ip bootp server
+ip domain name uhc.com
+ip name-server {{dns-1}}
+ip name-server {{dns-2}}
+ip multicast-routing distributed
+ip multicast multipath
+ip multicast route-limit 350
+snmp-server community {{snmp_ro}} RO 59
+snmp-server community {{snmp_rw}} RW 60
+snmp-server trap-source Loopback0
+snmp-server tftp-server-list 60
+snmp-server location *CORE-DEVICE* Street, TOWN, STATE ZIPCODE
+snmp-server contact ACME Help Desk, 555-555-55555
+snmp-server system-shutdown
+snmp-server enable traps snmp authentication linkdown linkup coldstart warmstart
+snmp-server enable traps ospf state-change
+snmp-server enable traps ospf errors
+snmp-server enable traps ospf retransmit
+snmp-server enable traps ospf lsa
+snmp-server enable traps ospf cisco-specific state-change nssa-trans-change
+snmp-server enable traps ospf cisco-specific state-change shamlink interface
+snmp-server enable traps ospf cisco-specific state-change shamlink neighbor
+snmp-server enable traps ospf cisco-specific errors
+snmp-server enable traps ospf cisco-specific retransmit
+snmp-server enable traps ospf cisco-specific lsa
+snmp-server enable traps bgp
+snmp-server enable traps config
+snmp-server enable traps frame-relay
+snmp-server enable traps frame-relay subif
+snmp-server enable traps hsrp
+snmp-server enable traps pim neighbor-change invalid-pim-message
+snmp-server enable traps memory bufferpeak
+snmp-server enable traps entity
+snmp-server enable traps ipsla
+snmp-server enable traps alarms informational
+snmp-server host {{hpna1}} public  bgp bgp alarms frame-relay config pim syslog ipsla snmp
+snmp-server host {{hpna2}} public  bgp bgp alarms frame-relay config pim syslog ipsla snmp
+snmp-server host {{hpna3}} public  bgp bgp alarms frame-relay config pim syslog ipsla snmp
+snmp-server host {{hpna4}} public  bgp bgp alarms frame-relay config pim syslog ipsla snmp
+snmp-server file-transfer access-group 60 protocol tftp
+snmp ifmib ifindex persist
+snmp mib persist cbqos
+!
+tacacs server {{tacacs-server}}
+ address ipv4 {{tacacs-ip}
+ key {{tacacs.key}}
+ timeout 30
+ single-connection
+ !
+tacacs server {{tacacs-server}}
+ address ipv4 {{tacacs-ip}
+ key {{tacacs.key}}
+ timeout 30
+ single-connection
+!
+!
+control-plane
+!
+!
+!
+!
+banner motd ^
+*********************************************************************
+This is a very very very very very very very very very very very very
+very very very very very very very very very very very very very very 
+very very very very very very very very very very very very very very 
+very very very very very very very very very very very very very very 
+very very very very very very very very very very very very very very
+long banner.
+*********************************************************************
+^
+!
+line con 0
+ exec-timeout 10 10
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line vty 0 4
+ access-class permitssh in vrf-also
+ exec-timeout 10 10
+ transport preferred none
+ transport input ssh
+!
+scheduler interval 500
+ntp source {{mgt-if|default(loopback0)}}
+ntp access-group peer 59
+ntp server {{ntp-server1}}
+ntp server {{ntp-server2}}
+!
+end
