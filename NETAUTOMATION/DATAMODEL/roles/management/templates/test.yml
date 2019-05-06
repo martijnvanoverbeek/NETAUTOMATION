@@ -1,0 +1,4 @@
+---
+tacacs:
+  server1: { ip: '10.0.0.1', secret: tacacssecret1}
+  server2: { ip: '11.0.0.2', secret: tacacssecret2}

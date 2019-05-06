@@ -12,7 +12,7 @@ feature lldp
 feature vtp
 feature bfd
 
-username {{admin}} password xxxx  role network-admin
+username admin password xxxx  role network-admin
 
 banner motd ^
 *********************************************************************
@@ -25,20 +25,23 @@ long banner.
 *********************************************************************
 ^
 ip domain-lookup
-ip domain-name uhc.com
-ip name-server {{dns1}} {{dns2}}
-tacacs-server key {{key}}
-tacacs-server host{{tacacs.key}}
-tacacs-server key {{key}} 
-aaa group server tacacs+ uhg_tacacs 
-    server {{tacacs.ip1}} 
-    server {{tacacs.ip2}} 
-    source-interface loopback0
+ip domain-name {{domain}}
+{% for ip in nameservers %}
+ip name-server {{ip}}
+{% endfor %}
+{% for acs in tacacs %}
+tacacs-server host {{acs.ip}}
+{% endfor %}
+tacacs-server key {{tacacskey}}  
+{% for acs in tacacs %}
+aaa group server tacacs+ std_tacacs
+    server {{acs.ip}}
+    source-interface {{mgtif|default('loopback0')}}
+    use vrf management
+{% endfor %}
+
 no logging event link-status default
 !
-  vrf member management
-
-!n start
 line console
 line vty
 !

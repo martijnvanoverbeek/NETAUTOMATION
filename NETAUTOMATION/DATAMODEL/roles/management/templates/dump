@@ -1,0 +1,59 @@
+{% for snmp in snmpcommunities %}
+snmp-server community {{snmp['RO']}} RO 59
+snmp-server community {{snmp['RW']}}  RW 60
+{% endfor %}
+snmp-server file-transfer access-group 60 protocol tftp
+snmp ifmib ifindex persist
+snmp mib persist cbqos
+!
+{% for name, acs in tacacs %}
+tacacs server {{name}}
+ timeout 30
+ single-connection
+ address ipv4 {{acs.ip}}
+ key {{acs.secret}}
+{% endfor %}
+ timeout 30
+ single-connection
+
+!
+!
+control-plane
+!
+!
+!
+!
+banner motd ^
+*********************************************************************
+This is a very very very very very very very very very very very very
+very very very very very very very very very very very very very very 
+very very very very very very very very very very very very very very 
+very very very very very very very very very very very very very very 
+very very very very very very very very very very very very very very
+long banner.
+*********************************************************************
+^
+!
+line con 0
+ exec-timeout 10 10
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line vty 0 4
+ access-class permitssh in vrf-also
+ exec-timeout 10 10
+ transport preferred none
+ transport input ssh
+!
+scheduler interval 500
+ntp source {#{mgtif|default("loopback0")}#}
+ntp access-group peer 59
+{% for server in ntp %}
+ntp server {{server}}
+{% endfor %}
+!
+snmp-server enable traps alarms informational
+{% for ip, communitystring in snmptraphost %}
+snmp-server host {{ip.snmptraphost}} {{communitystring.snmptraphost}}  bgp bgp alarms frame-relay config pim syslog ipsla snmp
+{% endfor %}
+

@@ -1,3 +1,4 @@
+ersion 15.2
 service nagle
 no service pad
 service tcp-keepalives-in
@@ -10,6 +11,8 @@ service counters max age 10
 no service dhcp
 no platform punt-keepalive disable-kernel-core
 platform qos marker-statistics
+!
+username someone 
 !
 hostname {{inventory_hostname}}
 !
@@ -28,21 +31,40 @@ logging buffered 20000
 no logging console
 enable secret xxxxx
 !
+aaa new-model
+!
+!
+aaa group server tacacs+ std_tacacs
+!
+aaa authentication login default group tacacs+ local
+aaa authentication login no_tacacs group tacacs+ local
+aaa authorization exec default group tacacs+ none 
+aaa authorization commands 1 default group tacacs+ none 
+aaa authorization commands 15 default group tacacs+ none 
+aaa accounting commands 0 default stop-only group tacacs+
+aaa accounting commands 1 default stop-only group tacacs+
+aaa accounting commands 15 default stop-only group tacacs+
+aaa accounting network default start-stop group tacacs+
+!
+!
+!
+!
+!
 aaa session-id common
 no ip source-route
 ip options drop
 !
 ip flow-cache timeout active 1
 no ip bootp server
-ip domain name {{domain}}
+ip domain name uhc.com
+ip name-server {{dns-1}}
+ip name-server {{dns-2}}
 ip multicast-routing distributed
 ip multicast multipath
 ip multicast route-limit 350
-logging source-interface {{mgtif|default("loopback0")}}
-{% for ip in syslog %}
-logging host {{ip}}
-{% endfor %}
-snmp-server trap-source {{mgtif|default("loopback0")}}
+snmp-server community {{snmp_ro}} RO 59
+snmp-server community {{snmp_rw}}  RW 60
+snmp-server trap-source Loopback0
 snmp-server tftp-server-list 60
 snmp-server location *CORE-DEVICE* Street, TOWN, STATE ZIPCODE
 snmp-server contact ACME Help Desk, 555-555-55555
@@ -67,48 +89,27 @@ snmp-server enable traps pim neighbor-change invalid-pim-message
 snmp-server enable traps memory bufferpeak
 snmp-server enable traps entity
 snmp-server enable traps ipsla
-{% for snmppriv,snmpcom in snmpcommunities.iteritems() %}
-{% if snmppriv=='RO'%}
-snmp-server community {{snmpcom}} RO 59
-{% endif %}
-{% if snmppriv=='RW'%}
-snmp-server community {{snmpcom}}  RW 60
-{% endif %}
-{% endfor %}
 snmp-server enable traps alarms informational
-{% for hosts in snmptraphost %}
-snmp-server host {{hosts.ip}} {{hosts.community}}  bgp bgp alarms frame-relay config pim syslog ipsla snmp
-{% endfor %}
+snmp-server host {{hpna1}} public  bgp bgp alarms frame-relay config pim syslog ipsla snmp
+snmp-server host {{hpna2}} public  bgp bgp alarms frame-relay config pim syslog ipsla snmp
+snmp-server host {{hpna3}} public  bgp bgp alarms frame-relay config pim syslog ipsla snmp
+snmp-server host {{hpna4}} public  bgp bgp alarms frame-relay config pim syslog ipsla snmp
+snmp-server file-transfer access-group 60 protocol tftp
+snmp ifmib ifindex persist
+snmp mib persist cbqos
 !
-{% for acs in tacacs %}
-tacacs server {{acs.name}}
- address ipv4 {{acs.ip}}
- key {{tacacskey}}
+tacacs server {{tacacs-server}}
+ address ipv4 {{tacacs-ip}
+ key {{tacacs.key}}
  timeout 30
  single-connection
  !
- {% endfor %}
-aaa group server std_tacacs
-{% for acs in tacacs %}
-    server {{acs.ip}}
-{% endfor %}
+tacacs server {{tacacs-server}}
+ address ipv4 {{tacacs-ip}
+ key {{tacacs.key}}
+ timeout 30
+ single-connection
 !
-aaa new-model
-aaa authentication login default group std_tacacs local
-aaa authentication login no_tacacs group std_tacacs  local
-aaa authorization exec default group std_tacacs  none 
-aaa authorization commands 1 default group std_tacacs  none 
-aaa authorization commands 15 default group std_tacacs  none 
-aaa accounting commands 0 default stop-only group std_tacacs 
-aaa accounting commands 1 default stop-only group std_tacacs 
-aaa accounting commands 15 default stop-only group std_tacacs 
-aaa accounting network default start-stop group std_tacacs 
-aaa session-id common
-!
-{% for ip in nameservers %}
-ip name-server {{ip}}
- {% endfor %}
- !
 !
 control-plane
 !
@@ -138,8 +139,9 @@ line vty 0 4
  transport input ssh
 !
 scheduler interval 500
-ntp source {{mgtif|default("loopback0")}}
+ntp source {{mgt-if|default(loopback0)}}
 ntp access-group peer 59
-{% for server in ntp %}
-ntp server {{server}}
-{% endfor %}
+ntp server {{ntp-server1}}
+ntp server {{ntp-server2}}
+!
+end

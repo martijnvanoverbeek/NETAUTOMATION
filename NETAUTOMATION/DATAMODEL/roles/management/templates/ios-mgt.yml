@@ -1,0 +1,26 @@
+---
+#inventory and mgtif belong to hostfile and host_vars
+ inventory_hostname: blahhost
+ mgtif: mgmt0
+ snmpcommunities:
+   RO: testro
+   RW: testrw
+ snmptraphost:
+  - { ip: '10.100.100.100', community: public }
+  - { ip: '10.100.100.101', community: public }
+  - { ip: '10.100.100.102', community: public }
+  - { ip: '10.100.100.103', community: public }
+ tacacs:
+  - { name: server1, ip: '10.0.0.1'}
+  - { name: server2, ip: '11.0.0.2'}
+ tacacskey: '123456'
+ nameservers:
+  - '10.11.11.12'
+  - '10.11.12.12'
+ ntp:
+ - '10.10.10.10'
+ - '11.11.11.11'
+ syslog: 
+   - '10.175.245.132'
+   - '10.114.48.39'
+   - '10.204.114.226'
