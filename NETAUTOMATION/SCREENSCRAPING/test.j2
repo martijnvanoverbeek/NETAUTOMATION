@@ -1,9 +1,9 @@
 ---
-{% set vrftable=vrfname.vrf %}
-{% for entry in vrftable %}
+showcommands:
+{% for entry in vrfname.vrf %}
 {% if entry["name"]!='VRF-Name' %}
 {% if entry["name"]!='default' %}
-show ip route vrf {{entry["name"]}}
+- 'show ip route vrf {{entry["name"]}}'
 {% endif %}
 {% endif %}
 {% endfor %}

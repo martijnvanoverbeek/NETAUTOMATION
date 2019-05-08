@@ -1,5 +1,5 @@
 ---
-show ip route vrf ISP
-show ip route vrf cih-common
-show ip route vrf management
-show ip route vrf vpc-keepalive
+showcommands:
+- 'show ip route vrf ISP'
+- 'show ip route vrf management'
+- 'show ip route vrf vpc-keepalive'

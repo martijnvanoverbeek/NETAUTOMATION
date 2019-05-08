@@ -10,5 +10,15 @@
     - set_fact: vrfname={{ vrf.stdout[0] | parse_cli('cli_filters/vrf.yml') }}
     - debug: var=vrfname
     - template: 
-         src: shit.j2
-         dest: "commands.yml"                                                                                                            
+         src: test.j2
+         dest: "commands.yml"
+- name: run commands
+  hosts: nxos
+  connection: network_cli
+  vars_files: commands.yml
+  tasks:
+    - nxos_command: commands="{{item}}"
+      register: results
+      loop: "{{showcommands}}"
+    - debug: var=results
+  
