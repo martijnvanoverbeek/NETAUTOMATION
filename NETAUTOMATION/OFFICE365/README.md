@@ -1,26 +1,19 @@
-# PLAYBOOK TO DISABLE NXAPI FEATURE
-## VUL0xxxxxx FOR ALL 
-Cisco NX-OS: Cisco NX-OS Software NX-API Arbitrary Command Execution Vulnerability
+# PLAYBOOK TO GRAB PREFIXES FROM MICROSOFT TO UPDATE ROUTE|ITD|FIREWALL TABLES
+## MS API
+The website below contains the information for MS API
+[MICROSOFT O365](https://docs.microsoft.com/en-us/office365/enterprise/office-365-ip-web-service "Microsoft O365")
 
 # PURPOSE
-The purpose of this playbook is to disable features on NXOS. First run the script in "--check" mode and analyse the output in the "changes" folder. Then run the playbook without "--check". Analyze the pre and post tests.
+Automatically update route filters to allow traffic to reach o365
 
 # VERSION
 Verion 0.1
 # USAGE
 Check mode:
-"ansible-playbook -i hosts disable_nxapi.yml --check"
-
-Run in check mode and verify in the directory "changes" what is being executed. Based on the output hosts can be ommited from the change
-
-Production:
-"ansible-playbook -i hosts disable_nxapi.yml"
+"ansible-playbook -i hosts o365.yml "
 
 
 # OPEN ITEMS/TODO's
 Version | Item | Status | Prio
 --------|------|------- | ------
 0.1 | Playbook | Closed | High
-0.1 | Checkmode | Closed | High
-0.1 | Run pre and post tests and safe results | Closed | Medium
-0.2 | Run filters to analyze output | Open | High
