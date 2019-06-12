@@ -3,7 +3,7 @@
   hosts: localhost
   tasks:
    - uri: 
-        url: https://endpoints.office.com/endpoints/worldwide?clientrequestid=bb9e70bd-f509-4f6c-8327-77459e74a6b4   
+        url: https://endpoints.office.com/endpoints/worldwide?clientrequestid=bb9e70bd-f509-4f6c-8327-77459e74a6cb   
         return_content: yes
         body_format: json
      register: mso365all
@@ -11,18 +11,20 @@
    - set_fact: chgid={% for entry in mso365all.content | from_json %}{% if entry["category"]=="Optimize" %}{% if entry["serviceArea"]=="Exchange" %}{% set ID = entry.id %}{{ID | int}}{% endif %}{% endif %}{% endfor %}
 #This task stores the latest o365 version in a variable version
    - uri: 
-        url: https://endpoints.office.com/version?clientrequestid=bb9e70bd-f509-4e6c-8327-79450e64d6b4 
+        url: https://endpoints.office.com/version?clientrequestid=bb9e70bd-f509-4e6c-8327-79450e64d6cb 
         return_content: yes
         body_format: json
      register: mso365version
    - set_fact: version={% for ver in mso365version.content | from_json %}{% if ver["instance"]=="Worldwide" %}{% set test = ver.latest %}{{test}}{% endif %}{% endfor %} 
    - uri: 
-        url: https://endpoints.office.com/changes/worldwide/0000000000?clientrequestid=bb9e70ba-f589-4e6c-8327-79650764d6b4
+        url: https://endpoints.office.com/changes/worldwide/0000000000?clientrequestid=bb9e70ba-f589-4e6c-8c27-79650764d6ab
         return_content: yes
         body_format: json
      register: mso365changes
-   - set_fact: prfxadds={% for chg in mso365changes.content | from_json %}{% if chg.id == chgid | int %}{% set prfx = chg.add.ips %}{{prfx}}{% endif %}{% endfor %}
-   - set_fact: prfxdels={% for chg in mso365changes.content | from_json %}{% if chg.id == chgid | int %}{% if chg.remove.ips is defined %}{% set prfx = chg.remove.ips %}{{prfx}}{% endif %}{% endif %}{% endfor %}
+ # the set_fact below gives errors is there is no "chg.add.ips"  
+   - set_fact: prfxadds={% for chg in mso365changes.content | from_json %}{% if chg.id == chgid | int %}{% if chg.add.ips is not defined %}{% set prfx = "" %}{{prfx}}{% else %}{% set prfx = chg.add.ips %}{{prfx}}{% endif %}{% endif %}{% endfor %}
+  # the set_fact below gives errors is there is no "chg.delete.ips" 
+   - set_fact: prfxdels={% for chg in mso365changes.content | from_json %}{% if chg.id == 3 | int  %}{% if chg.remove.ips is not defined %}{% set prfx = "" %}{{prfx}}{% else %}{% set prfx = chg.remove.ips %}{{prfx}}{% endif %}{% endif %}{% endfor %}
    - debug: 
       var=version 
    - debug: 
