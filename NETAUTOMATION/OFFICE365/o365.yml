@@ -22,7 +22,7 @@
         body_format: json
      register: mso365changes
    - set_fact: prfxadds={% for chg in mso365changes.content | from_json %}{% if chg.id == chgid | int %}{% set prfx = chg.add.ips %}{{prfx}}{% endif %}{% endfor %}
-   - set_fact: prfxdels={% for chg in mso365changes.content | from_json %}{% if chg.id == 2 %}{% set prfx = chg.remove.ips %}{{prfx}}{% endif %}{% endfor %}
+   - set_fact: prfxdels={% for chg in mso365changes.content | from_json %}{% if chg.id == chgid | int %}{% if chg.remove.ips is defined %}{% set prfx = chg.remove.ips %}{{prfx}}{% endif %}{% endif %}{% endfor %}
    - debug: 
       var=version 
    - debug: 
