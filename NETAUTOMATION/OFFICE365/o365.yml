@@ -21,10 +21,10 @@
         return_content: yes
         body_format: json
      register: mso365changes
- # the set_fact below gives errors is there is no "chg.add.ips"  
-   - set_fact: prfxadds={% for chg in mso365changes.content | from_json %}{% if chg.id == chgid | int %}{% if chg.add.ips is not defined %}{% set prfx = "" %}{{prfx}}{% else %}{% set prfx = chg.add.ips %}{{prfx}}{% endif %}{% endif %}{% endfor %}
-  # the set_fact below gives errors is there is no "chg.delete.ips" 
-   - set_fact: prfxdels={% for chg in mso365changes.content | from_json %}{% if chg.id == 3 | int  %}{% if chg.remove.ips is not defined %}{% set prfx = "" %}{{prfx}}{% else %}{% set prfx = chg.remove.ips %}{{prfx}}{% endif %}{% endif %}{% endfor %}
+# Jinja2 to search for added IPv4 prefixes that might the chgid
+   - set_fact: prfxadds={% for chg in mso365changes.content | from_json %}{% if chg.id == chgid | int %}{% if chg.add is defined %}{% set prfx = chg.add.ips %}{{prfx|ipv4}}{% else %}{% set prfx=[] %}{{prfx}}{% endif %}{% endif %}{% endfor %}
+# Jinja2 to search for removed IPv4 prefixes that might the chgid 
+   - set_fact: prfxdels={% for chg in mso365changes.content | from_json %}{% if chg.id == chgid | int %}{% if chg.remove is defined %}{% set prfx = chg.remove.ips %}{{prfx|ipv4}}{% else %}{% set prfx=[] %}{{prfx}}{% endif %}{% endif %}{% endfor %}
    - debug: 
       var=version 
    - debug: 
