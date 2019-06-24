@@ -22,9 +22,9 @@
         body_format: json
      register: mso365changes
 # Jinja2 to search for added IPv4 prefixes that might the chgid
-   - set_fact: prfxadds={% for chg in mso365changes.content | from_json %}{% if chg.id == chgid | int %}{% if chg.add is defined %}{% set prfx = chg.add.ips %}{{prfx|ipv4}}{% else %}{% set prfx=[] %}{{prfx}}{% endif %}{% endif %}{% endfor %}
+   - set_fact: prfxadds={% for chg in mso365changes.content | from_json %}{% if chg.id == 5 | int %}{% if chg.add is defined %}{% set prfx = chg.add.ips %}{{prfx|ipv4}}{% else %}{% set prfx=[] %}{{prfx}}{% endif %}{% endif %}{% endfor %}
 # Jinja2 to search for removed IPv4 prefixes that might the chgid 
-   - set_fact: prfxdels={% for chg in mso365changes.content | from_json %}{% if chg.id == chgid | int %}{% if chg.remove is defined %}{% set prfx = chg.remove.ips %}{{prfx|ipv4}}{% else %}{% set prfx=[] %}{{prfx}}{% endif %}{% endif %}{% endfor %}
+   - set_fact: prfxdels={% for chg in mso365changes.content | from_json %}{% if chg.id == 5 | int %}{% if chg.remove is defined %}{% set prfx = chg.remove.ips %}{{prfx|ipv4}}{% else %}{% set prfx=[] %}{{prfx}}{% endif %}{% endif %}{% endfor %}
    - debug: 
       var=version 
    - debug: 
@@ -35,3 +35,14 @@
       var=prfxadds
    - debug: 
       var=prfxdels
+
+- name: Collect ip objects
+  hosts: all
+  tasks:
+      - nxos_command:
+           commands:
+              - show object-group O365src 
+              - show object-group O365dst 
+        register: results
+      - set_fact: o365aclsrc={% set results[0] | from_json %} 
+      - debug: var=o365aclsrc

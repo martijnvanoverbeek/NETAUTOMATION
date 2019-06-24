@@ -1,0 +1,10 @@
+---
+- name: Collect ip objects
+  hosts: all
+  tasks:
+      - nxos_command:
+           commands:
+              - show object-group O365src | json
+              - show object-group O365dst | json
+        register: results
+      - debug: var=results

@@ -1,6 +1,6 @@
 [nxos]
-nxos  ansible_host=10.0.0.61
+test  ansible_host=172.24.3.70
 [nxos:vars]
 ansible_network_os=nxos
-ansible_ssh_user=admin
-ansible_ssh_pass=cisco
+ansible_user=test
+ansible_ssh_pass=testtest
