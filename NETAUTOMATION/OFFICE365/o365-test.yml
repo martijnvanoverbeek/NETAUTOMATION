@@ -36,3 +36,10 @@
       var=prfxadds
    - debug: 
       var=prfxdels
+- name: Collect prefixes and id from Exchange online
+  hosts: all
+  connection: network_cli
+  tasks:
+    - nxos_command: commands="show ip access-lists ITD_Excluded_Networks | json"
+      register: results
+    - debug: var=results

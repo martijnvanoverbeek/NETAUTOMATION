@@ -1,7 +1,6 @@
 [nxos]
-nxosvtep1  ansible_host=10.0.0.61
-nxosvtep2  ansible_host=10.0.0.62
+nxos  ansible_host=10.0.0.61
 [nxos:vars]
 ansible_network_os=nxos
-ansible_user=cisco
+ansible_ssh_user=admin
 ansible_ssh_pass=cisco
