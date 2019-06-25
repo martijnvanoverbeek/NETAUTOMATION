@@ -1,6 +1,6 @@
 ---
 - name: Collect ip objects
-  hosts: all
+  hosts: nxos
   tasks:
       - nxos_command:
            commands:
@@ -8,3 +8,12 @@
               - show object-group O365dst | json
         register: results
       - debug: var=results
+- name: Collect ip objects
+  hosts: ios
+  tasks:
+      - ios_command:
+           commands:
+              - show object-group O365src
+              - show object-group O365dst
+        register: iosresults
+      - debug: var=iosresults
