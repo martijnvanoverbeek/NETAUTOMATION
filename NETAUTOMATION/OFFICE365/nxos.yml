@@ -1,20 +1,32 @@
 ---
 - name: Collect ip objects
   hosts: nxos
+  vars_files: "vars1.yml"
   tasks:
-      - nxos_command:
-           commands:
-              - show object-group O365src | json
-              - show object-group O365dst | json
-        register: results
-      - debug: var=results
+#      - nxos_command:
+#           commands:
+#              - show object-group O365src | json
+#              - show object-group O365dst | json
+#        register: results
+#     - debug: var=results
 #Use this task with parse_cli to extract list of of prefixes with sequence numbers
-      - nxos_command:
-           commands:
-              - show object-group O365src
-              - show object-group O365dst
-        register: iosresults
-      - set_fact: ioso365src={{ iosresults.stdout[0] | parse_cli('cli_filter/0365.yml') }}
-      - set_fact: ioso365dst={{ iosresults.stdout[1] | parse_cli('cli_filter/0365.yml') }}
-      - debug: var=ioso365src
-      - debug: var=ioso365dst
+#      - nxos_command:
+#           commands:
+#              - show object-group O365src
+#              - show object-group O365dst
+#        register: iosresults
+#      - set_fact: ioso365src={{ iosresults.stdout[0] | parse_cli('cli_filter/0365.yml') }}
+#      - set_fact: ioso365dst={{ iosresults.stdout[1] | parse_cli('cli_filter/0365.yml') }}
+#      - debug: var=ioso365src
+#      - debug: var=ioso365dst
+      - debug: var=o365object
+      - set_fact: o365list="{{ o365object|map(attribute="net_ip")|list }}"
+      - set_fact: 
+            remove: "{{ o365list | difference(o365prfx) }}"
+            add: "{{ o365prfx | difference(o365list) }}"
+      - debug: var=o365prfx
+      - debug: var=o365list
+      - debug: var=add
+      - debug: var=remove
+      - debug: msg={{ o365object | selectattr("net_ip", "equalto", "remove") | map(attribute="seqno") | list }}
+
