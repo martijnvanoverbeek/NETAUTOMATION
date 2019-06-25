@@ -1,0 +1,10 @@
+---
+vars:
+   subnets:
+      seqno: "{{item.seqno}}"
+      net_ip: "{{item.net_ip}}"
+keys:
+   subnets:
+      type: list
+      value: "{{subnets}}"
+      items: "^\\s+(?P<seqno>\\d+)\\s+(?P<net_ip>[0-9./]+).?"

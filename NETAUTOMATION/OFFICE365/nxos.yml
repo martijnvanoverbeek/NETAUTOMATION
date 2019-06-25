@@ -8,12 +8,13 @@
               - show object-group O365dst | json
         register: results
       - debug: var=results
-- name: Collect ip objects
-  hosts: ios
-  tasks:
-      - ios_command:
+#Use this task with parse_cli to extract list of of prefixes with sequence numbers
+      - nxos_command:
            commands:
               - show object-group O365src
               - show object-group O365dst
         register: iosresults
-      - debug: var=iosresults
+      - set_fact: ioso365src={{ iosresults.stdout[0] | parse_cli('cli_filter/0365.yml') }}
+      - set_fact: ioso365dst={{ iosresults.stdout[1] | parse_cli('cli_filter/0365.yml') }}
+      - debug: var=ioso365src
+      - debug: var=ioso365dst

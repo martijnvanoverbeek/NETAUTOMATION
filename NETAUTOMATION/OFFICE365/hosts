@@ -1,5 +1,5 @@
 [nxos]
-test ansible_host=172.24.3.70
+test ansible_host=10.0.0.72
 [nxos:vars]
 ansible_network_os=nxos
 ansible_user=cisco
