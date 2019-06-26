@@ -1,6 +1,0 @@
-{"TABLE_ogroup": {"ROW_ogroup": [{"group_type": "100", "group_name": "O365", "TABLE_seqno": {"ROW_seqno": [{"seqno": "10", "hostaddr": "1.1.1.1"},
- {"seqno": "20", "hostaddr": "1.1.1.3"}, {"seqno": "30", "hostaddr": "1.1.1.5"}]}}, {"group_type": "100", "group_name": "O365dest", "TABLE_seqno":
- {"ROW_seqno": {"seqno": "10", "hostaddr": "9.9.9.9"}}}, {"group_type": "100", "group_name": "O365dst", "TABLE_seqno": {"ROW_seqno": [{"seqno": "1
-0", "hostaddr": "1.1.1.1"}, {"seqno": "20", "hostaddr": "1.1.1.3"}, {"seqno": "30", "hostaddr": "1.1.1.5"}]}}, {"group_type": "100", "group_name":
- "O365src", "TABLE_seqno": {"ROW_seqno": [{"seqno": "10", "net_ip": "10.0.12.0/24"}, {"seqno": "20", "net_ip": "10.0.14.0/24"}, {"seqno": "30", "n
-et_ip": "100.0.14.0/24"}]}}
