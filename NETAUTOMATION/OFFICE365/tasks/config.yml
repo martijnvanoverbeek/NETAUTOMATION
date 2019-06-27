@@ -1,0 +1,14 @@
+---
+      - copy:
+          content: |
+             object-group ip address O365dst
+             {% for line in sequence %}
+               no {{line}}
+             {% endfor %}
+             {% for prefix in prefixes %}
+               {{prefix}}
+             {% endfor %}             
+          dest: "changes/{{inventory_hostname}}_changes.txt"
+      - nxos_config:
+          src: "changes/{{inventory_hostname}}_changes.txt"   
+          save_when: modified

@@ -1,0 +1,41 @@
+---
+- name: Collect ip objects
+  hosts: nxos
+#Problem Azure uses /32 subnet while object gives output "host" instead of /32
+  tasks:
+      - uri: 
+            url: https://endpoints.office.com/endpoints/worldwide?clientrequestid=cb9e70bd-f509-4f6c-8328-77459e74a6c2   
+            return_content: yes
+            body_format: json
+        register: mso365all
+      - set_fact: prefixes={% for entry in mso365all.content | from_json %}{% if entry["category"]=="Optimize" %}{% if entry["serviceArea"]=="Exchange" %}{% set office = entry.ips %}{{office|ipv4}}{% endif %}{% endif %}{% endfor %}
+      - debug: var=prefixes 
+#Use this task with parse_cli to extract list of of prefixes with sequence numbers
+#After collecting the information we need to add /32 after all host avi_networks
+#I can only do this in three steps, use ipaddr ('net') filter to collect CIDR blocks and use ('host')filter for /32 networks
+      - nxos_command:
+           commands:
+              - show object-group O365dst
+        register: iosresults        
+      - set_fact: ioso365dst={{ iosresults.stdout[0] | parse_cli('cli_filter/0365.yml') }}
+      - set_fact: sequence="{{ ioso365dst.subnets|map(attribute="seqno")|list }}"
+      - debug: var=sequence 
+#Remove and recreate file
+      - file: path=changes state=absent
+        run_once: true
+      - file: path=changes state=directory
+#Trying to join to lists together
+      - set_fact: realprefixes="{{ioso365dst.subnets|map(attribute="net_ip")|ipaddr('net')}}"
+      - set_fact: hostprefixes="{{ioso365dst.subnets|map(attribute="net_ip")|ipaddr('host')}}"
+#o365livelist is the list containing only the subnets in a same format as we receive from Microsoft
+      - set_fact: o365livelist="{{realprefixes+hostprefixes}}"
+      - debug: var=o365livelist
+#Compare difference between Microsoft and Object on switch
+      - set_fact: 
+            remove: "{{ o365livelist | difference(prefixes) }}"
+            add: "{{ prefixes | difference(o365livelist) }}"
+      - debug: var=add
+      - debug: var=remove
+#Include a task where you create the configuration, stored in changes/{{ansible_host}}-config
+      - include: tasks/config.yml
+        when: add is defined and (add|list>0) and remove is defined and (remove|length>0)

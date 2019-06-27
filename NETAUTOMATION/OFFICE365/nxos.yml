@@ -40,4 +40,3 @@
       - debug: var=add
       - debug: var=remove
       - debug: msg={{ o365object | selectattr("net_ip", "equalto", "remove") | map(attribute="seqno") | list }}
-
