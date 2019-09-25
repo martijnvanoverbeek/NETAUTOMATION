@@ -2,3 +2,4 @@ hosts
 postchange_routes/*
 prechange_routes/*
 host_vars/*
+results/*
