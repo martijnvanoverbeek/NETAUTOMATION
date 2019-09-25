@@ -1,0 +1,5 @@
+vrfname:
+{% for entry in vrftable.vrf %}
+- name: {{entry["name"]}}
+  indexno: {{ loop.index-1 }}
+{% endfor %}

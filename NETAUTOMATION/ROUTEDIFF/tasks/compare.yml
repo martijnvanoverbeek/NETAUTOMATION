@@ -1,0 +1,15 @@
+---
+    - name: Tasks1
+      command: cat prechange_routes/{{inventory_hostname}}_{{vrf}}-prechange_routes.txt
+      register: preroutes
+      #    - set_fact: pre={{preroutes.results.[vrfno].stdout | parse_cli_textfsm('cli_filter/route_filter') }}
+    - name: Tasks2
+      command: cat postchange_routes/{{inventory_hostname}}_{{vrf}}_postchange_routes.txt
+      register: postroutes
+#    - set_fact: post={{postroutes.results.[vrfno].stdout | parse_cli_textfsm('cli_filter/route_filter') }}
+#    - template:
+#     src: "templates/precreate.j2"
+#     dest: "vars/pre-{{ inventory_hostname }}_{{vrf}}.yaml"
+#   - template:
+#     src: "templates/postcreate.j2"
+#     dest: "vars/post-{{ inventory_hostname }}_{{vrf}}.yaml"

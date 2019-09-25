@@ -1,0 +1,72 @@
+---
+- name: Run pre-tests
+  hosts: nxos
+  connection: network_cli
+  tasks:
+    - nxos_command:
+        commands: show ip route
+      register: route_output
+    - file: path=/home/temp06/Ansible/yaml/non-prod/routediff/prechange_routes state=absent
+      run_once: true
+    - file: path=/home/temp06/Ansible/yaml/non-prod/routediff/prechange_routes state=directory 
+      run_once: true
+    - copy:
+          content: 
+                "{{route_output.stdout[0]}}"
+          dest: "/home/temp06/Ansible/yaml/non-prod/routediff/prechange_routes/{{inventory_hostname}}_prechange_routes.txt"
+      delegate_to: localhost
+  tags: prechange
+- name: Run post-tests
+  hosts: nxos
+  connection: network_cli
+  tasks:
+    - nxos_command:
+        commands: show ip route
+      register: route_output
+    - file: path=/home/temp06/Ansible/yaml/non-prod/routediff/postchange_routes state=absent
+      run_once: true
+    - file: path=/home/temp06/Ansible/yaml/non-prod/routediff/postchange_routes state=directory
+      run_once: true
+    - copy:
+          content: 
+               "{{route_output.stdout[0]}}"
+          dest: "/home/temp06/Ansible/yaml/non-prod/routediff/postchange_routes/{{inventory_hostname}}_postchange_routes.txt"
+      delegate_to: localhost
+  tags: postchange
+- name: Compare routing tables
+  hosts: nxos
+  tasks:
+    - command: cat /home/temp06/Ansible/yaml/non-prod/routediff/prechange_routes/{{inventory_hostname}}_prechange_routes.txt
+      register: preroutes
+    - set_fact: pre={{preroutes.stdout | parse_cli_textfsm('/home/temp06/Ansible/yaml/non-prod/routediff/cli_filter/route_filter') }}
+    - command: cat /home/temp06/Ansible/yaml/non-prod/routediff/postchange_routes/{{inventory_hostname}}_postchange_routes.txt
+      register: postroutes
+    - set_fact: post={{postroutes.stdout | parse_cli_textfsm('/home/temp06/Ansible/yaml/non-prod/routediff/cli_filter/route_filter') }}
+    - file: path=vars state=absent
+      run_once: true
+    - file: path=vars state=directory
+      run_once: true
+    - template:
+        src: "/home/temp06/Ansible/yaml/non-prod/routediff/templates/precreate.j2"
+        dest: "/home/temp06/Ansible/yaml/non-prod/routediff/vars/pre-{{ inventory_hostname }}.yaml"
+    - template:
+        src: "/home/temp06/Ansible/yaml/non-prod/routediff/templates/postcreate.j2"
+        dest: "/home/temp06/Ansible/yaml/non-prod/routediff/vars/post-{{ inventory_hostname }}.yaml"
+    - include_vars:
+            dir: /home/temp06/Ansible/yaml/non-prod/routediff/vars
+            files_matching: "(pre|post)-{{inventory_hostname}}.yaml"
+    - set_fact: 
+            add: "{{ postchange | difference(prechange) }}"
+            remove: "{{ prechange | difference(postchange) }}"
+    - file: path=results state=absent
+      run_once: true
+    - file: path=results state=directory
+      run_once: true
+    - template:
+         src: "/home/temp06/Ansible/yaml/non-prod/routediff/templates/{{change}}-csv.j2"
+         dest: "/home/temp06/Ansible/yaml/non-prod/routediff/results/{{inventory_hostname}}_{{change}}_routes.csv"
+      loop: [prechange, postchange, add, remove]
+      loop_control:
+           loop_var: change
+           label: "creating csv for {{change}}"
+  tags: compare

@@ -1,0 +1,5 @@
+---
+prechange:
+{% for name in item %}
+ - {{name.Prefix}},{{name.Gateway}},{{name.Protocol}},{{name.Distance}}
+{% endfor %}

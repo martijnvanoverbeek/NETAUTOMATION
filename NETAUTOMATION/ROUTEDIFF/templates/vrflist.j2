@@ -1,0 +1,9 @@
+---
+prevars:
+{% for entry in vrfname %}
+- 'pre_{{entry}}_{{inventory_hostname}}'
+{% endfor %}
+postvars:
+{% for entry in vrfname %}
+- 'post_{{entry}}_{{inventory_hostname}}'
+{% endfor %}

@@ -1,0 +1,9 @@
+---
+ vars:
+    vrf:
+       name: "{{item.name}}"
+ keys:
+    vrf:
+      type: list
+      value: "{{vrf}}"
+      items: "^(?!VRF-Name|management|default)(?P<name>[a-zA-Z0-9-_]+).*"

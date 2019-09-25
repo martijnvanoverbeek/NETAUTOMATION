@@ -1,0 +1,4 @@
+vrfname:
+{% for entry in vrftable.vrf %}
+- '{{entry["name"]}}'
+{% endfor %}

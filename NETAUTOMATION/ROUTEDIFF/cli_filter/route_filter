@@ -1,0 +1,14 @@
+Value Filldown Prefix (\d+.\d+.\d+.\d+\S\d+)
+Value Protocol ([a-z,A-Z]+)
+Value Type ((internal|external|type-1|type2)?)
+Value Gateway ((\d+.\d+.\d+.\d+)|Null0)
+Value Required Distance (\d+)
+Value LastChange (\S+)
+
+Start
+  ^\S+ in via output denotes.+ -> Routes
+
+Routes
+  ^${Prefix},\s\S+\s\S+.* 
+  ^\s+\S+\s${Gateway},\s([a-z,A-Z\/0-9\.]+,\s)?\S${Distance}\S\d+\S,\s${LastChange},\s${Protocol}(\S+\s)?${Type}.* -> Record
+

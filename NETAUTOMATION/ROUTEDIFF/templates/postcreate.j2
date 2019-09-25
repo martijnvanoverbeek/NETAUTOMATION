@@ -1,0 +1,5 @@
+---
+postchange:
+{% for name in post %}
+ - {{name.Prefix}},{{name.Gateway}},{{name.Protocol}},{{name.Distance}}
+{% endfor %}

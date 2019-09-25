@@ -1,0 +1,8 @@
+realvrf:
+{% for entry in vrftable.vrf %}
+- '{{entry["name"]}}'
+{% endfor %}
+vrfname:
+{% for entry in vrftable.vrf %}
+- '{{entry["name"]|replace("-", "_")}}'
+{% endfor %}
