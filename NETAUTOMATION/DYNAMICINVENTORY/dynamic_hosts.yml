@@ -1,0 +1,24 @@
+---
+- name: Extract NA hosts
+  hosts: localhost
+  vars:
+     csvfile: "{{lookup('file', 'search_result.csv')}}"
+  tasks:
+    - template:
+           src: "templates/iterate.j2"
+           dest: "vars/iterate.yml"
+    - include_vars: 
+           dir: vars
+    - template:
+           src: "templates/compare.j2"
+           dest: "vars/compare.yml"
+    - include_vars: 
+           dir: vars
+           files_matching: compare.yml
+    - set_fact: Incomplete={{Inventory|difference(Inv2)}}
+    - template:
+           src: "templates/incomplete.j2"
+           dest: "incomplete.csv"
+    - template:
+           src: "templates/createinventory.j2"
+           dest: "hosts"

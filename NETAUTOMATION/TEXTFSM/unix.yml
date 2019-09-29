@@ -1,0 +1,9 @@
+---
+- name: Retrieve BGP neighbor information
+  hosts: localhost
+  tasks:
+  - command: cat unixif
+    register: unix_output
+  - name: T1
+    debug: msg={{unix_output.stdout}}
+  - debug: msg={{ unix_output.stdout | parse_cli_textfsm('textfsm/unix_template') }}

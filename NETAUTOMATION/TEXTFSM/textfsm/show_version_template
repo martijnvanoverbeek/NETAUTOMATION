@@ -1,0 +1,11 @@
+Value Version (.*)
+Value Uptime (.*)
+Value ConfigRegister (\w+)
+Value ResetReason (.*)
+
+Start
+  ^\s+NXOS.+version ${Version}
+  ^.*uptime is ${Uptime}
+  ^.+Reason: ${ResetReason}
+  ^Configuration register is ${ConfigRegister} -> Record
+

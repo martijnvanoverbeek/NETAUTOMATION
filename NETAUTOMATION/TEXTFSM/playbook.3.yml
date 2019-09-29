@@ -1,0 +1,11 @@
+---
+- name: Retrieve BGP neighbor information
+  hosts: localhost
+  tasks:
+  - command: cat show_install
+    register: show_install_output
+  - name: T1
+    debug: msg={{show_install_output.stdout}}
+  - debug: msg={{ show_install_output.stdout | parse_cli_textfsm('textfsm/show_install_tests') }}
+  - debug: msg={{ show_install_output.stdout | parse_cli_textfsm('textfsm/show_install_compat') }}
+  - debug: msg={{ show_install_output.stdout | parse_cli_textfsm('textfsm/show_install_upgrade') }}

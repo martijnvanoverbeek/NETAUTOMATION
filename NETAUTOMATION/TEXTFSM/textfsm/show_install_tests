@@ -1,0 +1,6 @@
+Value Test ([a-z]+)
+Value Result (\S+)
+
+Start
+  ^.*(Verifying|Preparing|Notifying|Performing) "?${Test}"?\s.*
+  ^.+\s+\d+%\s+[-]+\s${Result} -> Record

@@ -1,0 +1,192 @@
+---
+Inv2:
+{#NXOS#}
+{% for inv in Inventory %}
+{% if inv.Model is match('^Nexus(5|7|9|\s[3,5,6]).+') %}
+- Hostname: "{{inv.Hostname}}"
+  IP: "{{inv.IP}}" 
+  DeviceSW: "{{inv.DeviceSW}}"
+  Model: "{{inv.Model}}"
+  Vendor: "{{inv.Vendor}}"
+{% endif %}
+{% endfor %}
+{#N1K#}
+{% for inv in Inventory %}
+{% if inv.Model is match('^Nexus\s1.+') %}
+- Hostname: "{{inv.Hostname}}"
+  IP: "{{inv.IP}}" 
+  DeviceSW: "{{inv.DeviceSW}}"
+  Model: "{{inv.Model}}"
+  Vendor: "{{inv.Vendor}}"
+{% endif %}
+{% endfor %}
+{#ASA#}
+{% for inv in Inventory %}
+{% if inv.Model is match('^(ASA|FPR4K).+') %}
+- Hostname: "{{inv.Hostname}}"
+  IP: "{{inv.IP}}" 
+  DeviceSW: "{{inv.DeviceSW}}"
+  Model: "{{inv.Model}}"
+  Vendor: "{{inv.Vendor}}"
+{% endif %}
+{% endfor %}
+{#iosr#}
+{% for inv in Inventory %}
+{% if inv.Model is match('^(ISR|28|38|73|7204|C8|CISCO).+') %}
+- Hostname: "{{inv.Hostname}}"
+  IP: "{{inv.IP}}" 
+  DeviceSW: "{{inv.DeviceSW}}"
+  Model: "{{inv.Model}}"
+  Vendor: "{{inv.Vendor}}"
+{% endif %}
+{% endfor %}
+{#wlan#}
+{% for inv in Inventory %}
+{% if inv.Model is match('^AIR.+') %}
+- Hostname: "{{inv.Hostname}}"
+  IP: "{{inv.IP}}" 
+  DeviceSW: "{{inv.DeviceSW}}"
+  Model: "{{inv.Model}}"
+  Vendor: "{{inv.Vendor}}"
+{% endif %}
+{% endfor %}
+{#ioss#}
+{% for inv in Inventory %}
+{% if inv.Model is match('^(WS\-|C9[3,4]).+') %}
+- Hostname: "{{inv.Hostname}}"
+  IP: "{{inv.IP}}" 
+  DeviceSW: "{{inv.DeviceSW}}"
+  Model: "{{inv.Model}}"
+  Vendor: "{{inv.Vendor}}"
+{% endif %}
+{% endfor %}
+{#iosxe#}
+{% for inv in Inventory %}
+{% if inv.Model is match('^ASR1.+') %}
+- Hostname: "{{inv.Hostname}}"
+  IP: "{{inv.IP}}" 
+  DeviceSW: "{{inv.DeviceSW}}"
+  Model: "{{inv.Model}}"
+  Vendor: "{{inv.Vendor}}"
+{% endif %}
+{% endfor %}
+{#csr1v#}
+{% for inv in Inventory %}
+{% if inv.Model is match('^CSR1.+') %}
+- Hostname: "{{inv.Hostname}}"
+  IP: "{{inv.IP}}" 
+  DeviceSW: "{{inv.DeviceSW}}"
+  Model: "{{inv.Model}}"
+  Vendor: "{{inv.Vendor}}"
+{% endif %}
+{% endfor %}
+{#gigamon#}
+{% for inv in Inventory %}
+{% if inv.Model is match('^(HC|HD)[2,8]?$') %}
+- Hostname: "{{inv.Hostname}}"
+  IP: "{{inv.IP}}" 
+  DeviceSW: "{{inv.DeviceSW}}"
+  Model: "{{inv.Model}}"
+  Vendor: "{{inv.Vendor}}"
+{% endif %}
+{% endfor %}
+{#eos#}
+{% for inv in Inventory %}
+{% if inv.Model is match('^DCS.+') %}
+- Hostname: "{{inv.Hostname}}"
+  IP: "{{inv.IP}}" 
+  DeviceSW: "{{inv.DeviceSW}}"
+  Model: "{{inv.Model}}"
+  Vendor: "{{inv.Vendor}}"
+{% endif %}
+{% endfor %}
+{#waas#}
+{% for inv in Inventory %}
+{% if inv.Model is match('^(OE|WAVE|WAE|SM\-SRE).+') %}
+- Hostname: "{{inv.Hostname}}"
+  IP: "{{inv.IP}}" 
+  DeviceSW: "{{inv.DeviceSW}}"
+  Model: "{{inv.Model}}"
+  Vendor: "{{inv.Vendor}}"
+{% endif %}
+{% endfor %}
+{#iosxr#}
+{% for inv in Inventory %}
+{% if inv.Model is match('^ASR\-9.+') %}
+- Hostname: "{{inv.Hostname}}"
+  IP: "{{inv.IP}}" 
+  DeviceSW: "{{inv.DeviceSW}}"
+  Model: "{{inv.Model}}"
+  Vendor: "{{inv.Vendor}}"
+{% endif %}
+{% endfor %}
+{#raritan#}
+{% for inv in Inventory %}
+{% if inv.Model is match('^DSX.+') %}
+- Hostname: "{{inv.Hostname}}"
+  IP: "{{inv.IP}}" 
+  DeviceSW: "{{inv.DeviceSW}}"
+  Model: "{{inv.Model}}"
+  Vendor: "{{inv.Vendor}}"
+{% endif %}
+{% endfor %}
+{#iosvgw#}
+{% for inv in Inventory %}
+{% if inv.Model is match('^VG.+') %}
+- Hostname: "{{inv.Hostname}}"
+  IP: "{{inv.IP}}" 
+  DeviceSW: "{{inv.DeviceSW}}"
+  Model: "{{inv.Model}}"
+  Vendor: "{{inv.Vendor}}"
+{% endif %}
+{% endfor %}
+{#f5#}
+{% for inv in Inventory %}
+{% if inv.Model is match('^BIG\-IP.+') %}
+- Hostname: "{{inv.Hostname}}"
+  IP: "{{inv.IP}}" 
+  DeviceSW: "{{inv.DeviceSW}}"
+  Model: "{{inv.Model}}"
+  Vendor: "{{inv.Vendor}}"
+{% endif %}
+{% endfor %}
+{#ie5000#}
+{% for inv in Inventory %}
+{% if inv.Model is match('^IE\-5000.+') %}
+- Hostname: "{{inv.Hostname}}"
+  IP: "{{inv.IP}}" 
+  DeviceSW: "{{inv.DeviceSW}}"
+  Model: "{{inv.Model}}"
+  Vendor: "{{inv.Vendor}}"
+{% endif %}
+{% endfor %}
+{#Force10#}
+{% for inv in Inventory %}
+{% if inv.Model is match('^(S6|S4).+') %}
+- Hostname: "{{inv.Hostname}}"
+  IP: "{{inv.IP}}" 
+  DeviceSW: "{{inv.DeviceSW}}"
+  Model: "{{inv.Model}}"
+  Vendor: "{{inv.Vendor}}"
+{% endif %}
+{% endfor %}
+{#Aruba#}
+{% for inv in Inventory %}
+{% if inv.Model is match('^2930.+') %}
+- Hostname: "{{inv.Hostname}}"
+  IP: "{{inv.IP}}" 
+  DeviceSW: "{{inv.DeviceSW}}"
+  Model: "{{inv.Model}}"
+  Vendor: "{{inv.Vendor}}"
+{% endif %}
+{% endfor %}
+{#ES3D/G#}
+{% for inv in Inventory %}
+{% if inv.Model is match('^SM.+ES3.+') %}
+- Hostname: "{{inv.Hostname}}"
+  IP: "{{inv.IP}}" 
+  DeviceSW: "{{inv.DeviceSW}}"
+  Model: "{{inv.Model}}"
+  Vendor: "{{inv.Vendor}}"
+{% endif %}
+{% endfor %}

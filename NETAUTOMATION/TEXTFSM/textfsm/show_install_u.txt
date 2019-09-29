@@ -1,0 +1,10 @@
+Value Module (\d+)
+Value Image (\w+)
+Value RunningVersion (\S+)
+Value NewVersion (\S+)
+Value Upgrade ((yes|no))
+
+Start
+  ^Module\s+Image.*
+  ^------.*
+  ^\s+${Module}\s+${Image}\s+${RunningVersion}\s+${NewVersion}\s+${Upgrade}.* -> Record

@@ -1,0 +1,114 @@
+[nxos]
+{% for inv in Inventory %}
+{% if inv.Model is match('^Nexus(5|7|9|\s[3,5,6]).+') %}
+{{inv.Hostname}} ansible_host={{inv.IP}} network_sw_version={{inv.DeviceSW}}
+{% endif %}
+{% endfor %}
+[n1k]
+{% for inv in Inventory %}
+{% if inv.Model is match('^Nexus\s1.+') %}
+{{inv.Hostname}} ansible_host={{inv.IP}} network_sw_version={{inv.DeviceSW}}
+{% endif %}
+{% endfor %}
+[asa]
+{% for inv in Inventory %}
+{% if inv.Model is match('^(ASA|FPR4K).+') %}
+{{inv.Hostname}} ansible_host={{inv.IP}} network_sw_version={{inv.DeviceSW}}
+{% endif %}
+{% endfor %}
+[iosr]
+{% for inv in Inventory %}
+{% if inv.Model is match('^(ISR|28|38|73|7204|C8|CISCO).+') %}
+{{inv.Hostname}} ansible_host={{inv.IP}} network_sw_version={{inv.DeviceSW}}
+{% endif %}
+{% endfor %}
+[wlan]
+{% for inv in Inventory %}
+{% if inv.Model is match('^AIR.+') %}
+{{inv.Hostname}} ansible_host={{inv.IP}} network_sw_version={{inv.DeviceSW}}
+{% endif %}
+{% endfor %}
+[ioss]
+{% for inv in Inventory %}
+{% if inv.Model is match('^(WS\-|C9[3,4]).+') %}
+{{inv.Hostname}} ansible_host={{inv.IP}} network_sw_version={{inv.DeviceSW}}
+{% endif %}
+{% endfor %}
+[iosxe]
+{% for inv in Inventory %}
+{% if inv.Model is match('^ASR1.+') %}
+{{inv.Hostname}} ansible_host={{inv.IP}} network_sw_version={{inv.DeviceSW}}
+{% endif %}
+{% endfor %}
+[csr1v]
+{% for inv in Inventory %}
+{% if inv.Model is match('^CSR1.+') %}
+{{inv.Hostname}} ansible_host={{inv.IP}} network_sw_version={{inv.DeviceSW}}
+{% endif %}
+{% endfor %}
+[gigamon]
+{% for inv in Inventory %}
+{% if inv.Model is match('^(HC|HD)[2,8]?$') %}
+{{inv.Hostname}} ansible_host={{inv.IP}} network_sw_version={{inv.DeviceSW}}
+{% endif %}
+{% endfor %}
+[eos]
+{% for inv in Inventory %}
+{% if inv.Model is match('^DCS.+') %}
+{{inv.Hostname}} ansible_host={{inv.IP}} network_sw_version={{inv.DeviceSW}}
+{% endif %}
+{% endfor %}
+[waas]
+{% for inv in Inventory %}
+{% if inv.Model is match('^(OE|WAVE|WAE|SM\-SRE).+') %}
+{{inv.Hostname}} ansible_host={{inv.IP}} network_sw_version={{inv.DeviceSW}}
+{% endif %}
+{% endfor %}
+[iosxr]
+{% for inv in Inventory %}
+{% if inv.Model is match('^ASR\-9.+') %}
+{{inv.Hostname}} ansible_host={{inv.IP}} network_sw_version={{inv.DeviceSW}}
+{% endif %}
+{% endfor %}
+[raritan]
+{% for inv in Inventory %}
+{% if inv.Model is match('^DSX.+') %}
+{{inv.Hostname}} ansible_host={{inv.IP}} network_sw_version={{inv.DeviceSW}}
+{% endif %}
+{% endfor %}
+[iosvgw]
+{% for inv in Inventory %}
+{% if inv.Model is match('^VG.+') %}
+{{inv.Hostname}} ansible_host={{inv.IP}} network_sw_version={{inv.DeviceSW}}
+{% endif %}
+{% endfor %}
+[f5]
+{% for inv in Inventory %}
+{% if inv.Model is match('^BIG\-IP.+') %}
+{{inv.Hostname}} ansible_host={{inv.IP}} network_sw_version={{inv.DeviceSW}}
+{% endif %}
+{% endfor %}
+[ie5000]
+{% for inv in Inventory %}
+{% if inv.Model is match('^IE\-5000.+') %}
+{{inv.Hostname}} ansible_host={{inv.IP}} network_sw_version={{inv.DeviceSW}}
+{% endif %}
+{% endfor %}
+[force10]
+{% for inv in Inventory %}
+{% if inv.Model is match('^(S6|S4).+') %}
+{{inv.Hostname}} ansible_host={{inv.IP}} network_sw_version={{inv.DeviceSW}}
+{% endif %}
+{% endfor %}
+[aruba]
+{% for inv in Inventory %}
+{% if inv.Model is match('^2930.+') %}
+{{inv.Hostname}} ansible_host={{inv.IP}} network_sw_version={{inv.DeviceSW}}
+{% endif %}
+{% endfor %}
+[es3d]
+{% for inv in Inventory %}
+{% if inv.Model is match('^SM.+ES3.+') %}
+{{inv.Hostname}} ansible_host={{inv.IP}} network_sw_version={{inv.DeviceSW}}
+{% endif %}
+{% endfor %}

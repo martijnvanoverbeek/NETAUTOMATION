@@ -1,0 +1,12 @@
+---
+Inventory:
+{% for item in csvfile.split("\n") %}
+{%   if loop.index != 1 %}
+{%     set list = item.split(",") %}
+  - Hostname: {{ list[0]|trim() }}
+    IP: {{ list[1]|trim() }}
+    DeviceSW: {{ list[2]|trim() }}
+    Model: {{ list[3]|trim() }}
+    Vendor: {{ list[4]|trim() }}
+{%   endif %}
+{% endfor %}

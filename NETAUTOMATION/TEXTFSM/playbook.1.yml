@@ -1,0 +1,9 @@
+---
+- name: Retrieve BGP neighbor information
+  hosts: localhost
+  tasks:
+  - command: cat juniper1
+    register: juniper_output
+  - name: T1
+    debug: msg={{juniper_output.stdout}}
+  - debug: msg={{ juniper_output.stdout | parse_cli_textfsm('textfsm/juniper_template') }}

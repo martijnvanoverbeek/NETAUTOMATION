@@ -1,0 +1,12 @@
+---
+- name: Retrieve BGP neighbor information
+  hosts: all
+  connection: local
+  tasks:
+  - nxos_command:
+      commands: [ show clock, show version]
+    register: clock_output
+  - name: T1
+    debug: msg={{clock_output.stdout}}
+  - debug: msg={{ clock_output.stdout[0] | parse_cli_textfsm('textfsm/cisco_clock_template') }}
+  - debug: msg={{ clock_output.stdout[1] | parse_cli_textfsm('textfsm/show_version_template') }}

@@ -1,0 +1,11 @@
+Value Module (\d+)
+Value Bootable ((yes|no))
+Value Impact (\w+)
+Value InstallType (\w+)
+Value Reason (.*)
+
+
+Start
+  ^------\s-.*
+  ^\s+${Module}\s+${Bootable}\s+${Impact}\s+${InstallType}\s+${Reason}.* -> Record
+

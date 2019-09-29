@@ -1,0 +1,11 @@
+Value Filldown Chassis (\S+)
+Value Required Slot (\d)
+Value Required State (\w+)
+Value Temperature (\d+)
+Value DRAM (\d+)
+Value Buffer (\d+)
+
+Start
+  ^${Chassis}:
+  ^\s+${Slot}\s+${State}\s+${Temperature}\s+\d+\s+\d+\s+${DRAM}\s+\d+\s+${Buffer} -> Record
+  ^\s+${Slot}\s+${State} -> Record

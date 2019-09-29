@@ -1,0 +1,5 @@
+---
+before: 
+{% for iter2 in Inventory %}
+- "{{iter2.Hostname}},{{iter2.IP}},{{iter2.DeviceSW}},{{iter2.Model}},{{iter2.Vendor}}"
+{%endfor%}
